@@ -52,7 +52,7 @@ router.post("/", (req, res) => {
   }
 });
 
-router.put("/:id", async (req, res) => {
+router.put("/:id", (req, res) => {
   const { id } = req.params;
   const change = req.body;
   if (!change.title || !change.contents) {
@@ -82,7 +82,7 @@ router.put("/:id", async (req, res) => {
     });
 });
 
-router.delete("/:id", async (req, res) => {
+router.delete("/:id", (req, res) => {
   const { id } = req.params;
 
   Posts.findById(id)
@@ -106,7 +106,7 @@ router.delete("/:id", async (req, res) => {
     });
 });
 
-router.get("/:id/comments", async (req, res) => {
+router.get("/:id/comments", (req, res) => {
   const { id } = req.params;
 
   Posts.findById(id)
