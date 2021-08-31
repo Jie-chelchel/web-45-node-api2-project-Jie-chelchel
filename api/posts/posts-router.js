@@ -105,4 +105,24 @@ router.delete("/:id", async (req, res) => {
     });
 });
 
+router.get("/:id/comments", async (req, res) => {
+  const { id } = req.params;
+
+  Posts.findById(id)
+    .then((selectedPost) => {
+      if (!selectedPost) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist" });
+      } else {
+        Posts.findPostComments(id).then((data) => res.json(data));
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res
+        .status(500)
+        .json({ message: "The comments information could not be retrieved" });
+    });
+});
 module.exports = router;
