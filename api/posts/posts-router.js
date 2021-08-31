@@ -1,5 +1,6 @@
 // implement your posts router here
 const express = require("express");
+const server = require("../server");
 const router = express.Router();
 const Posts = require("./posts-model");
 
@@ -49,6 +50,36 @@ router.post("/", (req, res) => {
         });
       });
   }
+});
+
+router.put("/:id", async (req, res) => {
+  const { id } = req.params;
+  const change = req.body;
+  if (!change.title || !change.contents) {
+    return res
+      .status(400)
+      .json({ message: "Please provide title and contents for the post" });
+  }
+
+  Posts.findById(id)
+    .then((selectedPost) => {
+      if (!selectedPost) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist" });
+      } else {
+        // console.log(id, change);
+        return Posts.update(id, change);
+      }
+    })
+    .then((canUpdate) => {
+      if (canUpdate) {
+        res.status(201).json({ ...change, id: +id });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
 });
 
 module.exports = router;
