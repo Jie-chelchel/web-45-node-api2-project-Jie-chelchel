@@ -1,5 +1,4 @@
 const express = require("express");
-const server = require("../server");
 const router = express.Router();
 const Posts = require("./posts-model");
 
@@ -7,6 +6,7 @@ router.get("/", (req, res) => {
   Posts.find()
     .then((posts) => res.status(200).json(posts))
     .catch((err) => {
+      console.log(err);
       res
         .status(500)
         .json({ message: "The posts information could not be retrieved" });
@@ -27,6 +27,7 @@ router.get("/:id", (req, res) => {
       }
     })
     .catch((err) => {
+      console.log(err);
       res
         .status(500)
         .json({ message: "The post information could not be retrieved" });
