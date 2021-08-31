@@ -1,4 +1,3 @@
-// implement your posts router here
 const express = require("express");
 const server = require("../server");
 const router = express.Router();
@@ -79,6 +78,30 @@ router.put("/:id", async (req, res) => {
     })
     .catch((err) => {
       console.log(err);
+    });
+});
+
+router.delete("/:id", async (req, res) => {
+  const { id } = req.params;
+
+  Posts.findById(id)
+    .then((selectedPost) => {
+      if (!selectedPost) {
+        res
+          .status(404)
+          .json({ message: "The post with the specified ID does not exist" });
+      } else {
+        // console.log(id, change);
+        Posts.remove(id).then((canDelete) => {
+          if (canDelete) {
+            res.json(selectedPost);
+          }
+        });
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+      res.status(500).json({ message: "The post could not be removed" });
     });
 });
 
