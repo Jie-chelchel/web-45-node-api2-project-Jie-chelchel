@@ -15,7 +15,6 @@ router.get("/", (req, res) => {
 
 router.get("/:id", (req, res) => {
   const { id } = req.params;
-
   Posts.findById(id)
     .then((post) => {
       if (!post) {
@@ -72,8 +71,8 @@ router.put("/:id", (req, res) => {
         return Posts.update(id, change);
       }
     })
-    .then((canUpdate) => {
-      if (canUpdate) {
+    .then((records) => {
+      if (records === 1) {
         res.status(201).json({ ...change, id: +id });
       }
     })
@@ -93,8 +92,8 @@ router.delete("/:id", (req, res) => {
           .json({ message: "The post with the specified ID does not exist" });
       } else {
         // console.log(id, change);
-        Posts.remove(id).then((canDelete) => {
-          if (canDelete) {
+        Posts.remove(id).then((records) => {
+          if (records === 1) {
             res.json(selectedPost);
           }
         });
